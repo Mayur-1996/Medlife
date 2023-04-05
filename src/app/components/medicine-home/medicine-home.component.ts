@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { HttpService } from 'src/app/core/services/http.service';
 
 @Component({
@@ -13,6 +13,7 @@ export class MedicineHomeComponent implements OnInit {
   displayErrorMessage:boolean = false;
   isPinCodeAvailable:boolean =false;
   showDefaultPinCode : boolean= true;
+  @ViewChild('closeBtn') closeBtn!:ElementRef;
  
 constructor(private http:HttpService) { }
 
@@ -27,6 +28,9 @@ constructor(private http:HttpService) { }
         this.pincodeDetails = el[0];
         this.displayErrorMessage = false;
         this.showDefaultPinCode = false;
+        this.closeBtn.nativeElement.click();  
+
+
       }else {
        this.displayErrorMessage = true;
        this.showDefaultPinCode = true;

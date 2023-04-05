@@ -1,0 +1,25 @@
+<app-top-deals-header></app-top-deals-header>
+
+<div class="container mt-5">
+<h4>Shop By Categories</h4>
+
+<div class="row mt-4 ms-4" *ngFor= " let item of topDealsByCategoryData">
+    
+        <div class="card" style="width: 13rem; height: 22rem;">
+           
+            <div class="card-body">
+              <h5 class="card-title category-name">{{item.categoryName}}</h5>
+             
+            </div>
+          </div>
+          <div class="card shadow ms-4" style="width: 16rem;" *ngFor="let slide of item.top_deals">
+            <img [src]="slide.productImageSlug[0]" class="" alt="..."  height="250" width="200" >
+  
+          <div class="card-body" style="height: 162px;">
+            <h5 class="card-title card-description"> {{slide.description}}</h5>
+            <p class="card-text text-muted">{{slide.type}}</p>
+            <P class="card-text">MRP ₹&nbsp; <span class="me-2 text-decoration-line-through" *ngIf="slide.actualPrice !=slide.discountPrice">{{slide.actualPrice }}</span> {{slide.discountPrice}} <button type = "button" class="btn btn-outline-primary ms-4 btn-sm">ADD</button></P>
+          </div>
+          </div>
+    </div>
+</div>
