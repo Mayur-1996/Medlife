@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environment/environment';
 
@@ -18,4 +18,8 @@ export class HttpService {
   return this.http.get(url,{headers:this.httpheaders})
   }
   
+  getDataFromServerByQueryParams(endPoint:string,httpParams:HttpParams){ 
+    const url = this.baseUrl + endPoint;
+    return this.http.get(url,{headers:this.httpheaders,params:httpParams})
+    }
 }
