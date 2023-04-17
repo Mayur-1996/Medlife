@@ -1,4 +1,14 @@
-<form [formGroup]="signForm" (ngSubmit)="signUp">
+<div class="row">
+  <div class="alert alert-danger" role="alert" *ngIf="signForm.valid && !isOtpVerified">
+   OTP Verification is Mandatory
+  </div>
+
+  <div class="row">
+    <div class="alert alert-danger" role="alert" *ngIf="isIncorrectOtp">
+     OTP is Invalid
+    </div>
+
+  <form [formGroup]="signForm" (ngSubmit)="signUp()">
     <div class="mb-3">
       <label for="uName" class="form-label">User Name</label>
       <input type="text" class="form-control" id="uName" formControlName ="userName">
@@ -8,32 +18,35 @@
 
     <div class="mb-3 input-group">
       <input type="text" class="form-control" id="mobileNumber" formControlName ="mobileNumber">
-      <span class="input-group-text" (click)="getOtp()"><a>Get Otp</a> </span>
-
+      <span *ngIf="!isOtpVerified" class="input-group-text" (click)="getOtp()"><a>Get Otp</a> </span>
+<span *ngIf="isOtpVerified" class="input-group-text"><i class="bi bi-check-circle text-success fs-5 "></i></span>
     </div>
     <div *ngIf="isGetOtp">
       <label for="mobileNumber" class="form-label"> OTP</label>
 
       <div class="mb-3 input-group" >
-        <input type="text" class="form-control" id="mobileNumber" >
-        <span class="input-group-text" (click)="verifyOtp()"><a>Verify Otp</a> </span>
+        <input type="text" class="form-control" id="mobileNumber" #otp >
+        <span class="input-group-text" (click)="verifyOtp(otp.value)"><a>Verify Otp</a> </span>
   
       </div>
-      <div>Otp is Valid For {{otpCounter}}</div>
+      <div>Otp is Valid For {{otpCounter}}s</div>
     </div>
 
    
     <div class="mb-3">
         <label for="password" class="form-label">Password</label>
-        <input type="text" class="form-control" id="password" formControlName = "password">
+        <input type="password" class="form-control" id="password" formControlName = "password">
       </div>
     <div class="mb-3 form-check">
       <input type="checkbox" class="form-check-input" id="exampleCheck1">
       <label class="form-check-label" for="exampleCheck1">Check me out</label>
     </div>
+   
     <div class="d-grid gap-2">
-        <button type="submit" class="btn btn-primary" type="submit">Submit</button>
+        <button  class="btn btn-primary" type="submit" [disabled]="signForm.invalid">Submit</button>
 
     </div>
 
   </form>
+</div>
+

@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription, interval } from 'rxjs';
+import { HttpService } from '../../services/http.service';
 
 @Component({
   selector: 'app-sign-up',
@@ -11,39 +12,61 @@ export class SignUpComponent implements OnInit,OnDestroy {
  signForm! :FormGroup;
  isGetOtp:boolean=false;
  otpCounter:number=0;
+ otpGenerated! :number;
  sub!:Subscription;
- constructor(private fb:FormBuilder){ }
+ isOtpVerified:boolean = false;
+ constructor(private fb:FormBuilder, private http:HttpService){ 
+  
+ }
+
   ngOnInit(): void {
    this.initializeForm();
   }
  initializeForm(){
  this.signForm = this.fb.group({
-  "userName":[],
-  "password":[],
-  "mobileNumber":[],
+  "userName":['',[Validators.required]],
+  "password":['',[Validators.required]],
+  "mobileNumber":['',[Validators.required,Validators.maxLength(10)]],
   "isMobNoVerfied":[false]
  })
  }
+
  signUp(){
   console.log(this.signForm.value)
- }
+  this.http.postDataToserver("users",this.signForm.value).subscribe((el:any)=>{
 
- verifyOtp(){
-  
+  })
  }
-
  getOtp(){
- this.isGetOtp = true;
-
-  this.sub = interval(1000).subscribe((el:number)=>{
-    this.otpCounter = 60 - el;
-    if(this.otpCounter === 0){
-      this.sub.unsubscribe
-    }
-  console.log(el);
- })
- }
+  this.isGetOtp = true;
  
+ this.otpGenerated = Math.floor(1000 + Math.random()* 9000);
+  console.log(this.otpGenerated)
+ 
+   this.sub = interval(1000).subscribe((el:number)=>{
+     this.otpCounter = 60 - el;
+     // this.otpCounter--
+     if(this.otpCounter === 0){
+       this.sub.unsubscribe
+     }
+   console.log(el);
+  })
+  } 
+
+ isIncorrectOtp:boolean = false;
+verifyOtp(otp:any){
+if(this.otpGenerated == otp){
+  this.isOtpVerified = true;
+  this.isGetOtp = false;
+  this.isIncorrectOtp = false;
+  this.sub.unsubscribe();
+  this.signForm.controls["isMobNoVerfied"].setValue(true);
+}
+else{
+  this.isIncorrectOtp = true;
+}
+ }
+
  ngOnDestroy(){
   this.sub.unsubscribe();
  }

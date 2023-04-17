@@ -8,18 +8,23 @@ import { environment } from 'src/environment/environment';
 export class HttpService {
 
  baseUrl:string=environment.baseUrl;
- httpheaders:HttpHeaders = new HttpHeaders()
+ httpHeaders:HttpHeaders = new HttpHeaders()
                            .set("Content-type","application/json");
 
   constructor(private http:HttpClient) { }
 
   getDataFromServer(endPoint:string){ 
   const url = this.baseUrl + endPoint;
-  return this.http.get(url,{headers:this.httpheaders})
+  return this.http.get(url,{headers:this.httpHeaders})
   }
   
   getDataFromServerByQueryParams(endPoint:string,httpParams:HttpParams){ 
     const url = this.baseUrl + endPoint;
-    return this.http.get(url,{headers:this.httpheaders,params:httpParams})
+    return this.http.get(url,{headers:this.httpHeaders,params:httpParams})
+    }
+
+    postDataToserver(endPoint:string, data:any){
+      const url = this.baseUrl + endPoint;
+      return this.http.post(url,data,{headers:this.httpHeaders})
     }
 }

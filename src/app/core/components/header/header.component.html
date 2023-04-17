@@ -1,39 +1,83 @@
 <div class="container">
-    <nav class="navbar bg-body-tertiary">
-    <div class="container-fluid ">
-      <a class="navbar-brand  ms-3" href="#">
-        <img src="https://www.medibuddy.in/assets/images/medibuddy-icon.png" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
-     <span class="text-primary fs-4"> Medlife</span>
+  <nav class="navbar bg-body-tertiary">
+    <div class="container-fluid">
+      <a class="navbar-brand ms-3" href="#">
+        <img
+          src="https://www.medibuddy.in/assets/images/medibuddy-icon.png"
+          alt="Logo"
+          width="30"
+          height="24"
+          class="d-inline-block align-text-top"
+        />
+        <span class="text-primary fs-4"> Medlife</span>
       </a>
 
       <div class="text-end me-5">
-        <a  class="text-decoration-none me-3">About Us</a>
+        <a class="text-decoration-none me-3">About Us</a>
 
-        <a  class="text-decoration-none ms-2 cursor"  data-bs-toggle="modal" data-bs-target="#exampleModal" #loginModel>Login</a>
-
+        <a
+          class="text-decoration-none ms-2 cursor"
+          data-bs-toggle="modal"
+          data-bs-target="#exampleModal"
+          #loginModel
+          *ngIf="!isUserLoggedIn"
+          >Login</a
+        >
+        <span class="text-decoration-none ms-2 cursor" *ngIf="isUserLoggedIn">
+          {{ userDetails?.userName }}
+        </span>
+        <i class="bi bi-cart2 ms-2 fs-5 cursor" routerLink="/cart"></i> <span class="border rounded-circle px-1 bg-danger text-white cart">{{cartCounter}}</span>
       </div>
     </div>
   </nav>
-</div> 
+</div>
 
-
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">{{actionName === 'SignUp'? 'Sign Up':'Sign In'}}</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <h1 class="modal-title fs-5" id="exampleModalLabel">
+          {{ actionName === "SignUp" ? "Sign Up" : "Sign In" }}
+        </h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+          #closeBtn
+        ></button>
       </div>
       <div class="modal-body">
-        <app-sign-in *ngIf="actionName === 'SignIn'"></app-sign-in>
-        <app-sign-up  *ngIf="actionName === 'SignUp'"></app-sign-up>
-
+        <app-sign-in
+          *ngIf="actionName === 'SignIn'"
+          (emitAction)="getAction($event)"
+        ></app-sign-in>
+        <app-sign-up *ngIf="actionName === 'SignUp'"></app-sign-up>
       </div>
-      <div class="d-grid gap-2 ">
-        <button class="btn btn-primary" type="button" *ngIf="actionName == 'SignUp'" (click)="changeAction('SignIn')">Sign In</button>
-        <button class="btn btn-primary" type="button" *ngIf="actionName === 'SignIn'" (click)="changeAction('SignUp')">Sign Up</button>
+      <div class="d-grid gap-2">
+        <button
+          class="btn btn-primary"
+          type="button"
+          *ngIf="actionName == 'SignUp'"
+          (click)="changeAction('SignIn')"
+        >
+          Sign In
+        </button>
+        <button
+          class="btn btn-primary"
+          type="button"
+          *ngIf="actionName === 'SignIn'"
+          (click)="changeAction('SignUp')"
+        >
+          Sign Up
+        </button>
       </div>
     </div>
   </div>
 </div>
-
